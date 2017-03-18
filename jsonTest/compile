@@ -1,0 +1,1 @@
+emcc -o jsonTest.js jsonTest.cpp -O3 -s WASM=1 -s ASSERTIONS=1 -s EXPORTED_FUNCTIONS="['_sendMsg', '_sendJson', '_printTitle']" -std=c++11
