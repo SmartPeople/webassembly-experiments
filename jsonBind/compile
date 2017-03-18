@@ -1,0 +1,1 @@
+emcc JsonLib.cpp bindings.cpp -O3 -s WASM=1 --bind -o JsonLib.js -std=c++11
