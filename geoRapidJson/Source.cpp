@@ -1,42 +1,87 @@
-#include <emscripten/bind.h>
+#include <string>
 #include <unordered_map>
+#include <set>
 #include "rapidjson/document.h"
 #include "rapidjson/allocators.h"
 #include "rapidjson/prettywriter.h"
 #include "rapidjson/stringbuffer.h"
+#include <emscripten/bind.h>
 
-using namespace emscripten;
 using namespace rapidjson;
+using namespace std;
 
-std::string returnJson(std::string s) {
+
+struct ForJson {
+	string group;
+	string key;
+};
+
+struct Counter {
+	string group;
+	unordered_map<string, int> mapCounter;
+};
+
+string returnJson(string doc) {
 	Document document;
-	document.Parse<0>(s.c_str());
+	document.Parse<0>(doc.c_str());
 
-	std::unordered_map<std::string, int> stringCounter;
+	ForJson fj;
+	Counter counter;
+	vector<ForJson> v;
+
 
 	const Value& f = document["features"];
 	for (Value::ConstValueIterator itf = f.Begin(); itf != f.End(); ++itf) {
 		const Value& p = (*itf)["properties"];
 		for (Value::ConstMemberIterator itp = p.MemberBegin(); itp != p.MemberEnd(); ++itp)
 		{
-			itp->name.GetString();
-			itp->value.GetString();
-			stringCounter[itp->value.GetString()]++;
+			fj.group = itp->name.GetString();
+			fj.key = itp->value.GetString();
+			v.push_back(fj);
 		}
 	}
 
-	Document dRes;
-	Document::AllocatorType& alloc = dRes.GetAllocator();
-	dRes.SetObject();
+	set<string> uniq;
+	for (auto &i : v) {
+		uniq.insert(i.group);
+	}
 
-	for (auto& pair : stringCounter)
-		dRes.AddMember(StringRef(pair.first.c_str()), Value(pair.second), alloc);
-	StringBuffer buffer;
-	Writer<StringBuffer> writer(buffer);
-	dRes.Accept(writer);
-	return buffer.GetString();
+
+	unordered_map<std::string, int> stringCounter;
+
+	StringBuffer s;
+	Writer<StringBuffer> writer(s);
+	writer.StartObject();
+
+
+	for (auto &uu : uniq) {
+		stringCounter.clear();
+		writer.Key(uu.c_str());
+
+
+		for (auto &vv : v) {
+			if (vv.group == uu)
+			{
+				stringCounter[vv.key]++;
+			}
+		}
+
+		writer.StartObject();
+		for (auto &sc : stringCounter)
+		{
+			writer.Key(sc.first.c_str());
+			writer.Uint(sc.second);
+		}
+		writer.EndObject();
+
+	}
+
+	writer.EndObject();
+	return s.GetString();
 }
 
-EMSCRIPTEN_BINDINGS(my_module) {
-    function("returnJson", &returnJson);
+namespace emscripten {
+	EMSCRIPTEN_BINDINGS(my_module) {
+		function("returnJson", &returnJson);
+	}
 }
