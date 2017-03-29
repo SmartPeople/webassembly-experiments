@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-  	<title>JSON test</title>
+  	<title>WASM test</title>
   	<script src="index.js" type="text/javascript"></script>
   </head>
   <body>
   	<script>
 		function myFunction() {
-		    console.log(jsonData);
-		    console.time("call_CPP");
+		    //console.log(jsonData);
+		    console.time("call_WASM");
 		    let newJson = JSON.parse(Module.returnJson(jsonData));
-		    console.timeEnd("call_CPP");
+		    console.timeEnd("call_WASM");
 		    console.log(newJson);
 		}
 	</script>
