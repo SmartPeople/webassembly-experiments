@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="loader.js"></script>
+</head>
+
+<body>
+  <script>
+    loadWebAssembly('./cube.wasm').then(instance => {
+	console.log("loaded");
+      const cube = instance.exports._cube;
+	  console.log(cube(3));
+    })
+  </script>
+</body>
+</html>
