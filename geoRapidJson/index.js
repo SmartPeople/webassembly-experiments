@@ -10,7 +10,7 @@ fetch('post.wasm')
     document.body.appendChild(script);
     })
     .then(function() {
-    fetch("cn.json")
+    fetch("big_cn.json")
           .then(response => response.json())
           .then((data) => {
             jsonData = JSON.stringify(data);
