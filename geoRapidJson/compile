@@ -1,1 +1,1 @@
-emcc --bind -o post.js -s WASM=1 -O3 Source.cpp -std=c++11
+emcc --bind -o post.js -s WASM=1 -O3 -s TOTAL_MEMORY=134217728 Source.cpp -std=c++11
