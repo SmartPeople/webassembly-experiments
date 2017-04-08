@@ -10,7 +10,7 @@ fetch('post.wasm')
     document.body.appendChild(script);
     })
     .then(function() {
-    fetch("mini.json")
+    fetch("cn.json")
           .then(response => response.json())
           .then((data) => {
             jsonData = JSON.stringify(data);

@@ -1,39 +1,42 @@
+#include <set>
 #include <string>
 #include <unordered_map>
-#include <set>
 #include "rapidjson/document.h"
-#include "rapidjson/allocators.h"
 #include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
 #include <emscripten/bind.h>
 
-using namespace rapidjson;
 using namespace std;
-
+using namespace rapidjson;
 
 struct ForJson {
-	string group;
-	string key;
+	wstring group;
+	wstring key;
 };
 
 struct Counter {
-	string group;
-	unordered_map<string, int> mapCounter;
+	wstring group;
+	unordered_map<wstring, int> mapCounter;
 };
 
-string returnJson(string doc) {
-	Document document;
-	document.Parse<0>(doc.c_str());
 
+wstring returnJson(wstring ss) {
+	
 	ForJson fj;
 	Counter counter;
 	vector<ForJson> v;
-
-
-	const Value& f = document["features"];
-	for (Value::ConstValueIterator itf = f.Begin(); itf != f.End(); ++itf) {
-		const Value& p = (*itf)["properties"];
-		for (Value::ConstMemberIterator itp = p.MemberBegin(); itp != p.MemberEnd(); ++itp)
+	
+	typedef rapidjson::GenericDocument<rapidjson::UTF16<>> WDocument;
+	typedef rapidjson::GenericValue<rapidjson::UTF16<> > WValue;
+	typedef rapidjson::GenericStringBuffer< rapidjson::UTF16<> > StringBuffer_UTF16;
+	
+	WDocument document;
+	document.Parse(ss.c_str());
+	
+	
+	const WValue& f = document[L"features"];
+	for (WValue::ConstValueIterator itf = f.Begin(); itf != f.End(); ++itf) {
+		const WValue& p = (*itf)[L"properties"];
+		for (WValue::ConstMemberIterator itp = p.MemberBegin(); itp != p.MemberEnd(); ++itp)
 		{
 			fj.group = itp->name.GetString();
 			fj.key = itp->value.GetString();
@@ -41,16 +44,15 @@ string returnJson(string doc) {
 		}
 	}
 
-	set<string> uniq;
+	set<wstring> uniq;
 	for (auto &i : v) {
 		uniq.insert(i.group);
 	}
-
-
-	unordered_map<std::string, int> stringCounter;
-
-	StringBuffer s;
-	Writer<StringBuffer> writer(s);
+	
+	unordered_map<wstring, int> stringCounter;
+	StringBuffer_UTF16 s;
+	Writer<StringBuffer_UTF16, UTF16<>, UTF16<>> writer(s);
+	
 	writer.StartObject();
 
 
@@ -78,6 +80,7 @@ string returnJson(string doc) {
 
 	writer.EndObject();
 	return s.GetString();
+
 }
 
 namespace emscripten {
