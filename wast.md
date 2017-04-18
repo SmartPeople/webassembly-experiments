@@ -125,7 +125,7 @@ int sum(x, y){
 
 ___
 
-### .WAST, генерируемый wabt
+### .WASM, генерируемый wabt
 
 https://github.com/WebAssembly/wabt
 
