@@ -122,3 +122,16 @@ int sum(x, y){
  ;; custom section "dylink", size 5
 )
 ```
+
+___
+
+### .WAST, генерируемый wabt
+
+https://github.com/WebAssembly/wabt
+
+`wast2wasm sum.wast -o sum.wasm`
+
+
+```00 61 73 6D 01 00 00 00 01 07 01 60 02 7F 7F 01 7F 03 02 01 00 07 07 01 03 73 75 6D 00 00 0A 0A 01 08 00 20 00 20 01 6A 0F 0B```
+
+wabt выдаёт более компактный код(!)
