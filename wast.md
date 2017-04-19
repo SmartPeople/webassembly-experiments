@@ -241,7 +241,7 @@ ___
 |0x02| Memory|
 |0x03| Global|
 
-`00` - kind of definition being imported
+`00` - kind of definition being imported (0x00 - Function)
 
 `00` - export Function "s" signature index
 
