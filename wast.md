@@ -134,13 +134,23 @@ https://github.com/WebAssembly/wabt
 
 ```00 61 73 6D 01 00 00 00 01 07 01 60 02 7F 7F 01 7F 03 02 01 00 07 07 01 03 73 75 6D 00 00 0A 0A 01 08 00 20 00 20 01 6A 0F 0B```
 
-wabt выдаёт более компактный код(!)
-
 
 ### Разбор опкодов
+
+https://github.com/WebAssembly/design/blob/master/BinaryEncoding.md
+
 #### wabt
 
-```00 61 73 6D 01 00 00 00 01 07 01 60 02 7F 7F 01 7F 03 02 01 00 07 07 01 03 73 75 6D 00 00 0A 0A 01 08 00 20 00 20 01 6A 0F 0B```
+```
+00 61 73 6D
+01 00 00 00
+01 07 01 60 02 7F 7F 01 7F
+03 02 01 00
+07 07 01 03 73 75 6D 00 00
+0A 0A 01 08 00 20 00 20 01 6A 0F 0B
+```
+
+___
 
 `00 61 73 6D` - wasm magic word (.asm)
 
@@ -168,7 +178,7 @@ ___
 
 `07` - Section size
 
-`01` - № of types
+`01` - Count of type entries to follow
 
 `60` - Function types are encoded by the byte 0x60 followed by the respective vectors of parameter and result types
 
@@ -181,13 +191,13 @@ ___
 |0x7C| f64|
 
 
-`02` - № of function inputs
+`02` - Count of function inputs
 
 `7F` - Input type (i32)
 
 `7F` - Input type (i32)
 
-`01` - № of function outputs
+`01` - Count of function outputs
 
 `7F` - Output type (i32)
 
@@ -200,13 +210,13 @@ ___
 
 `03 02 01 00`
 
-`03` Section "Function"
+`03` - Section "Function"
 
-`02` Section size
+`02` - Section size
 
-`01` № of functions
+`01` - Count of signature indices to follow
 
-`00` Function "s" signature index
+`00` - Function "s" signature index
 
 
 ___
@@ -214,4 +224,52 @@ ___
 
 `07 07 01 03 73 75 6D 00 00`
 
-`03` Section "Export"
+`07` - Section "Export"
+
+`07` - Section size
+
+`01` - Count of export entries
+
+`03` - Function name size
+
+`73 75 6D` - "sum" (function name from export) `(export "sum" (func $s))`
+
+|Code|Type|
+|----|----|
+|0x00| Function|
+|0x01| Table|
+|0x02| Memory|
+|0x03| Global|
+
+`00` - kind of definition being imported
+
+`00` - export Function "s" signature index
+
+____
+
+
+`0A 0A 01 08 00 20 00 20 01 6A 0F 0B`
+
+`0A` - Section "Code"
+
+`0A` - Section size
+
+`01` - Count of functions
+
+`08` - Function size
+
+`00` - Number of local variables
+
+`20` - read a local variable or **parameter** `param $x i32`
+
+`00` - index of `x`
+
+`20` - read a local variable or **parameter** `param $y i32`
+
+`01` - index of `y`
+
+`6A` - i32.add
+
+`0F` - Return
+
+`0B` - End
