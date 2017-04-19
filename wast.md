@@ -135,3 +135,71 @@ https://github.com/WebAssembly/wabt
 ```00 61 73 6D 01 00 00 00 01 07 01 60 02 7F 7F 01 7F 03 02 01 00 07 07 01 03 73 75 6D 00 00 0A 0A 01 08 00 20 00 20 01 6A 0F 0B```
 
 wabt выдаёт более компактный код(!)
+
+
+### Разбор опкодов
+#### wabt
+
+```00 61 73 6D 01 00 00 00 01 07 01 60 02 7F 7F 01 7F 03 02 01 00 07 07 01 03 73 75 6D 00 00 0A 0A 01 08 00 20 00 20 01 6A 0F 0B```
+
+`00 61 73 6D` - wasm magic word (.asm)
+
+`01 00 00 00` - wasm version (0x01)
+
+___
+
+| Name |	Code 	| Description |
+|------|------------|-------------|
+|Type |	0x01 |	Function signature declarations |
+|Import | 0x02 | Import declarations |
+|Function | 0x03 | Function declarations |
+|Table | 0x04 | Indirect function table and other tables |
+|Memory | 0x05 | Memory attributes |
+|Global | 0x06 | Global declarations |
+|Export | 0x07 | Exports |
+|Start | 0x08 | Start function declaration |
+|Element | 0x09 | Elements section |
+|Code | 0x0A | Function bodies (code) |
+|Data | 0x0B | Data segments |
+
+`01 07 01 60 02 7F 7F 01 7F`
+
+`01` - Section "Type"
+`07` - Section size
+`01` - № of types
+`60` - Function types are encoded by the byte 0x60 followed by the respective vectors of parameter and result types
+
+|Code|Type|
+|----|----|
+|0x7F| i32|
+|0x7E| i64|
+|0x7D| f32|
+|0x7C| f64|
+
+
+`02` - № of function inputs
+`7F` - Input type (i32)
+`7F` - Input type (i32)
+`01` - № of function outputs
+`7F` - Output type (i32)
+
+`(func $s (param $x i32) (param $y i32) (result i32)`
+
+___
+
+
+
+`03 02 01 00`
+
+`03` Section "Function"
+`02` Section size
+`01` № of functions
+`00` Function "s" signature index
+
+
+___
+
+
+`07 07 01 03 73 75 6D 00 00`
+
+`03` Section "Export"
