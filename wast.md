@@ -165,9 +165,13 @@ ___
 `01 07 01 60 02 7F 7F 01 7F`
 
 `01` - Section "Type"
+
 `07` - Section size
+
 `01` - № of types
+
 `60` - Function types are encoded by the byte 0x60 followed by the respective vectors of parameter and result types
+
 
 |Code|Type|
 |----|----|
@@ -178,10 +182,15 @@ ___
 
 
 `02` - № of function inputs
+
 `7F` - Input type (i32)
+
 `7F` - Input type (i32)
+
 `01` - № of function outputs
+
 `7F` - Output type (i32)
+
 
 `(func $s (param $x i32) (param $y i32) (result i32)`
 
@@ -192,8 +201,11 @@ ___
 `03 02 01 00`
 
 `03` Section "Function"
+
 `02` Section size
+
 `01` № of functions
+
 `00` Function "s" signature index
 
 
