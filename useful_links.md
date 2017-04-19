@@ -1,23 +1,25 @@
-### Общее
+### РћР±С‰РµРµ
 
 http://webassembly.org/
 
 
-### Разработка
+### Р Р°Р·СЂР°Р±РѕС‚РєР°
 
-The Emscripten SDK https://github.com/juj/emsdk
+The Emscripten SDK 
+https://github.com/juj/emsdk
 https://kripken.github.io/emscripten-site/index.html
 
 
-The WebAssembly Binary Toolkit https://github.com/WebAssembly/wabt
+The WebAssembly Binary Toolkit 
+https://github.com/WebAssembly/wabt
 
 
 
 
 
-### Спецификации
+### РЎРїРµС†РёС„РёРєР°С†РёРё
 
-Память, валидация. Обоснование через мат. логику.
+РџР°РјСЏС‚СЊ, РІР°Р»РёРґР°С†РёСЏ. РћР±РѕСЃРЅРѕРІР°РЅРёРµ С‡РµСЂРµР· РјР°С‚. Р»РѕРіРёРєСѓ.
 https://github.com/WebAssembly/spec/blob/master/papers/pldi2017.pdf
 
 WebAssembly Specification
